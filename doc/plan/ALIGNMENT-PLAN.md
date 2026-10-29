@@ -2,7 +2,7 @@
 
 Status: Accepted, in progress
 Date: 2026-10-01
-Reference repo: [gsamuele78/Proxmox_biome_log_collector](https://github.com/gsamuele78/Proxmox_biome_log_collector) at `v0.3.1` (`4cd92b4`)
+Reference repo: [gsamuele78/Proxmox_biome_log_collector](https://github.com/BIOME-Biodiversity-Macroecology/Proxmox_biome_log_collector) at `v0.3.1` (`4cd92b4`)
 This repo at analysis time: `main` @ `af8f87e`, 130 commits, **no tags**
 
 This plan brings this repo up to the reference repo's standard for

@@ -8,6 +8,18 @@ the 3.x → 4.x releases is
 
 ## [Unreleased]
 
+### Changed (repository moved to the BIOME organisation)
+
+- The repositories moved from `gsamuele78` to the
+  `BIOME-Biodiversity-Macroecology` organisation on 2026-10-28.
+  `infra-rstudio/UPSTREAM.lock` now clones R-studioConf from the new URL, so the
+  RStudio sync no longer depends on GitHub's redirect. Links in `SECURITY.md`,
+  `CONTRIBUTING.md`, `doc/plan/ALIGNMENT-PLAN.md` and the plugin marketplace
+  source in `.claude/settings.json` updated too.
+- `rstudio-upstream-sync.yml` runs `.ai/generate.sh` before opening the sync PR.
+  Image pins in the vendored tree feed the generated agent files, so every sync
+  PR used to fail `make agents-check` (seen on #12).
+
 ### Added (contributor tooling)
 
 - Agent/editor config that starts by itself when the repo is opened in Claude Code or

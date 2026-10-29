@@ -16,6 +16,9 @@ the 3.x → 4.x releases is
   RStudio sync no longer depends on GitHub's redirect. Links in `SECURITY.md`,
   `CONTRIBUTING.md`, `doc/plan/ALIGNMENT-PLAN.md` and the plugin marketplace
   source in `.claude/settings.json` updated too.
+- `rstudio-upstream-sync.yml` runs `.ai/generate.sh` before opening the sync PR.
+  Image pins in the vendored tree feed the generated agent files, so every sync
+  PR used to fail `make agents-check` (seen on #12).
 
 ### Added (contributor tooling)
 

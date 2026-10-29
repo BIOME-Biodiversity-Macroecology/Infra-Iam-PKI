@@ -40,6 +40,15 @@ jobs:
           echo "old=${old:0:12}" >> "$GITHUB_OUTPUT"
           echo "new=${new:0:12}" >> "$GITHUB_OUTPUT"
 
+      # Vendored compose files carry image pins that .ai/generate.sh copies into
+      # CLAUDE.md and the other agent files; regenerate them in the same PR so
+      # the lint job's agents-check does not fail on every sync.
+      - name: Regenerate agent files
+        run: |
+          set -euo pipefail
+          .ai/generate.sh
+          .ai/generate.sh --check
+
       - name: Gates on the vendored result
         run: |
           set -euo pipefail

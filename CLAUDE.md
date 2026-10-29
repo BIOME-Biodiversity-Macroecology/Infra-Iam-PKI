@@ -36,13 +36,13 @@ PINNED VERSIONS (extracted from code — do not override):
   ${TELEMETRY_API_IMAGE: -botanical-telemetry-api}:${IMAGE_TAG}
   caddy: 2.11.4-alpine
   containrrr/watchtower: 1.7.1
-  curlimages/curl: 8.11.1
+  curlimages/curl: 8.22.0
   infra-ood: local
   infra-pki-caddy: local # Local build
   postgres: 15-alpine
   smallstep/step-ca: 0.30.2
   smallstep/step-cli: 0.31.0
-  tecnativa/docker-socket-proxy: 0.3.0
+  tecnativa/docker-socket-proxy: v0.5.0
 
 WHEN GENERATING CODE:
 - Output COMPLETE files, not fragments

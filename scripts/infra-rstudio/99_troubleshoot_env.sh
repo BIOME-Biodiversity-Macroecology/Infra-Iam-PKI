@@ -2,7 +2,9 @@
 # 99_troubleshoot_env.sh - Environment Troubleshooting Script
 # Aggregates logs, system state, and active integration tests to isolate problems.
 # v1.3.0: Added --rprofile subsystem check for BIOME-CALC Rprofile v11.0 + audit v28.
-# Version: 1.3.0
+# v1.5.0: --storage also reports the local TrueNAS userquota cache when present.
+# v1.4.0: --storage write test writes 1 MiB + fsync (touch missed EDQUOT) and names server-side quota.
+# Version: 1.5.0
 
 set -euo pipefail
 
@@ -235,10 +237,41 @@ check_storage() {
         if [[ -n "$USER_HOME" && -d "$USER_HOME" ]]; then
             TEST_FILE="$USER_HOME/.biome_write_test_$$"
             echo "Testing write access to $USER_HOME as user $TEST_USER..."
-            if su -s /bin/bash "$TEST_USER" -c "touch $TEST_FILE && rm $TEST_FILE" 2>/dev/null; then
-                echo "✅ Write test SUCCESSFUL for $TEST_USER in $USER_HOME."
+            echo "Filesystem backing the home (client view — server-side ZFS user/group quotas are NOT shown here):"
+            df -hT "$USER_HOME" 2>/dev/null | sed 's/^/   /' || true
+            local quota_uid quota_file
+            quota_uid=$(id -u "$TEST_USER")
+            quota_file="/var/lib/biome-quota/${quota_uid}"
+            if [[ -r "$quota_file" ]]; then
+                local q_used q_limit q_objused q_objlimit q_stamp q_age
+                IFS=$'\t' read -r q_used q_limit q_objused q_objlimit q_stamp < "$quota_file"
+                q_age=$(( ($(date +%s) - q_stamp) / 60 ))
+                if [[ "$q_limit" =~ ^[0-9]+$ && "$q_limit" -gt 0 ]]; then
+                    awk -v u="$q_used" -v q="$q_limit" -v o="$q_objused" -v oq="$q_objlimit" -v a="$q_age" \
+                      'BEGIN { printf "Cached TrueNAS quota: %.1f GiB / %.1f GiB (%d%%), files %s / %s, age %d min\n", u/1073741824, q/1073741824, u*100/q, o, oq, a }'
+                else
+                    awk -v u="$q_used" -v o="$q_objused" -v a="$q_age" \
+                      'BEGIN { printf "Cached TrueNAS quota: %.1f GiB used (no limit), files %s, age %d min\n", u/1073741824, o, a }'
+                fi
             else
-                echo "❌ Write test FAILED for $TEST_USER in $USER_HOME. Check NFS permissions, root_squash, or AD mount creds."
+                echo "Cached TrueNAS quota: not available for uid ${quota_uid}."
+            fi
+            # v1.4.0: write real data with fsync. A bare touch creates an empty
+            # file and can pass while the server-side block quota is exhausted.
+            local write_err write_rc=0
+            write_err=$(su -s /bin/bash "$TEST_USER" -c \
+                "dd if=/dev/zero of='$TEST_FILE' bs=1M count=1 conv=fsync status=none; rc=\$?; rm -f '$TEST_FILE'; exit \$rc" \
+                2>&1) || write_rc=$?
+            if [[ "$write_rc" -eq 0 ]]; then
+                echo "✅ Write test SUCCESSFUL for $TEST_USER in $USER_HOME (1 MiB + fsync)."
+            elif grep -qi 'quota' <<<"$write_err"; then
+                echo "❌ Write test FAILED: Disk quota exceeded (EDQUOT) for $TEST_USER in $USER_HOME."
+                echo "   The quota is enforced by the NFS server (TrueNAS/ZFS), not by this client."
+                echo "   Check on the storage server: zfs userspace / groupspace for uid=$(id -u "$TEST_USER") gid=$(id -g "$TEST_USER")"
+                echo "   Runbook: docs/operations/TROUBLESHOOTING.md §4.4"
+            else
+                echo "❌ Write test FAILED for $TEST_USER in $USER_HOME (rc=$write_rc): ${write_err:-no stderr}"
+                echo "   Check NFS permissions, root_squash, idmap domain, or AD mount creds."
             fi
         else
             echo "⚠️ Could not perform write test: User home directory ($USER_HOME) does not exist or user not found."

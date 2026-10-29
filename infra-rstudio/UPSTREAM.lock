@@ -1,7 +1,7 @@
 {
   "_comment": "Generated and updated by scripts/infra-rstudio/sync_rstudioconf.sh. Edit only repo/ref/mappings/local by hand; never edit vendored files (fix them in R-studioConf).",
   "upstream": {
-    "repo": "https://github.com/gsamuele78/R-studioConf.git",
+    "repo": "https://github.com/BIOME-Biodiversity-Macroecology/R-studioConf.git",
     "ref": "main",
     "commit": "47441c5403fcf805a3713d9d59eaefec6f21a961"
   },

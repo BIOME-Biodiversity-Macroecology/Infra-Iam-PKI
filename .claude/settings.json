@@ -42,7 +42,7 @@
     "infra-iam-pki": {
       "source": {
         "source": "github",
-        "repo": "gsamuele78/Infra-Iam-PKI"
+        "repo": "BIOME-Biodiversity-Macroecology/Infra-Iam-PKI"
       }
     }
   }

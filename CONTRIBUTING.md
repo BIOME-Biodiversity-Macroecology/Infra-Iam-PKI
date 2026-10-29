@@ -25,7 +25,7 @@ that the repo can't see.
    `.ai/validate.sh` and the pre-commit hook (`make hooks`).
 3. Don't edit RStudio files here. `infra-rstudio/`, `kubernetes-deploy/rstudio/`
    and the host tools listed in `infra-rstudio/UPSTREAM.lock` are copies of
-   [R-studioConf](https://github.com/gsamuele78/R-studioConf): change them there,
+   [R-studioConf](https://github.com/BIOME-Biodiversity-Macroecology/R-studioConf): change them there,
    then `scripts/infra-rstudio/sync_rstudioconf.sh --update`.
 4. Scripts have hidden callers. Read the dependency graph in
    [.ai/agents.md](.ai/agents.md) §7 before changing what a script reads or writes.

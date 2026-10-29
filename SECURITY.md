@@ -3,7 +3,7 @@
 ## Reporting a vulnerability
 
 Don't open a public issue. Use GitHub's private
-[security advisory](https://github.com/gsamuele78/Infra-Iam-PKI/security/advisories/new)
+[security advisory](https://github.com/BIOME-Biodiversity-Macroecology/Infra-Iam-PKI/security/advisories/new)
 for this repository, or contact the maintainer directly. Include:
 
 - the affected file or service and the version (git tag or commit);
@@ -27,7 +27,7 @@ Dockerfiles, Caddy/Keycloak/OOD configuration and operator scripts.
 Vulnerabilities in the upstream images and packages (step-ca, Keycloak,
 PostgreSQL, Caddy, Open OnDemand, RStudio, oauth2-proxy) go to their
 projects. The RStudio stack is vendored from
-[R-studioConf](https://github.com/gsamuele78/R-studioConf): report issues
+[R-studioConf](https://github.com/BIOME-Biodiversity-Macroecology/R-studioConf): report issues
 in it there.
 
 ## Baseline

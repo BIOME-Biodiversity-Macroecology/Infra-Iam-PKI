@@ -3,7 +3,7 @@
   "upstream": {
     "repo": "https://github.com/BIOME-Biodiversity-Macroecology/R-studioConf.git",
     "ref": "main",
-    "commit": "015a1eb74213ecd3770949cfa201aa104852ab1a"
+    "commit": "f60e07e31bbfe5ebaccb8bb0c66ac344dc90b6a3"
   },
   "mappings": [
     {

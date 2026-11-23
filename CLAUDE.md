@@ -36,7 +36,7 @@ PINNED VERSIONS (extracted from code — do not override):
   ${TELEMETRY_API_IMAGE: -botanical-telemetry-api}:${IMAGE_TAG}
   caddy: 2.11.4-alpine
   containrrr/watchtower: 1.7.1
-  curlimages/curl: 8.22.0
+  curlimages/curl: 8.23.0
   infra-ood: local
   infra-pki-caddy: local # Local build
   postgres: 15-alpine
